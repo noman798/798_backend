@@ -8,7 +8,6 @@ from single_process import single_process
 
 
 def ping(ping_url, site_name, site_host, post_url, rss_url):
-    print ping_url, site_name, site_host, post_url, rss_url
     rpc_server = xmlrpclib.ServerProxy(ping_url)
     result = rpc_server.weblogUpdates.extendedPing(
         site_name, site_host, "http://"+post_url, "http://"+rss_url
@@ -22,6 +21,7 @@ def ping_all(*args, **kwds):
         'http://rpc.pingomatic.com/',
         'http://blogsearch.google.com/ping/RPC2',
     ]
+    print args 
     for url in ping_url_list:
         ping(url, *args, **kwds)
 
@@ -33,6 +33,7 @@ def main():
     while True:
         print "."
         for item in client.listen():
+            print item
             if item['type'] == 'message':
                 msg = item['data']
                 if msg:
