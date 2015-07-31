@@ -40,11 +40,7 @@ def modify_time(filename):
     t = time.localtime(time_stamp)
     return time.strftime('%Y-%m-%dT%H:%M:%S:%SZ', t)
 
-def new_xml(filename, url_list):
-    generate_xml(filename, url_list)
-    root = dirname(filename)
-
-def sitemap_xml():
+def sitemap_xml(root):
     with open(join(dirname(root), "sitemap.xml"),"w") as f:
         f.write('<?xml version="1.0" encoding="utf-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
         for i in glob.glob(join(root,"*.xml.gz")):
@@ -72,12 +68,13 @@ def sitemap(path, host, li):
         func = append_xml
     else:
         id += 1
-        func = new_xml 
+        func = generate_xml 
 
-    filepath = join(path,"sitemap",str(id)+".xml.gz")
+    root = join(path,"sitemap")
+    filepath = join(root,str(id)+".xml.gz")
 
     func(filepath, ["http://%s/%s"%(host,i) for i in li])
-    sitemap_xml()
+    sitemap_xml(root)
 
 
 def the_end(site_post):
