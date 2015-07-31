@@ -44,6 +44,7 @@ def new_xml(filename, url_list):
     generate_xml(filename, url_list)
     root = dirname(filename)
 
+def sitemap_xml():
     with open(join(dirname(root), "sitemap.xml"),"w") as f:
         f.write('<?xml version="1.0" encoding="utf-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
         for i in glob.glob(join(root,"*.xml.gz")):
@@ -54,6 +55,8 @@ def new_xml(filename, url_list):
         f.write('</sitemapindex>')
 
 def sitemap(path, host, li):
+    if not li:
+        return
     filelist = [
         int(i.rsplit("/", 1)[-1][:-7])
         for i in glob.glob(join(path,"sitemap/*.xml.gz"))
@@ -74,7 +77,7 @@ def sitemap(path, host, li):
     filepath = join(path,"sitemap",str(id)+".xml.gz")
 
     func(filepath, ["http://%s/%s"%(host,i) for i in li])
-
+    sitemap_xml()
 
 
 def the_end(site_post):
